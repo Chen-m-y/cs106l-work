@@ -5,7 +5,16 @@ Marriage Pact
 -------------
 
 Q1. It is your choice to use either an ordered or unordered set. In a few sentences, what are some of the tradeoffs between the two? Additionally, please give an example (that has not been shown in lecture) of a valid hash function that could be used to hash student names for an unordered set.
-A1. TODO
-
+A1. 红黑树=>不支持下标随机访问=>所以遍历O(n),但是insert/search/erase O(log n)
+    哈希表=>没有i的概念，但insert/search/erase 理论O(1)
+    unordered_set=>不关心顺序，追求极致速度
 Q2. Note that we are saving pointers to names in the queue, not names themselves. Why might this be desired in this problem? What happens if the original set where the names are stored goes out of scope and the pointers are referenced?
-A2. TODO
+A2. 避免昂贵的内存拷贝：8字节；保持与原始数据的同步性
+    现代 C++（C++11 及以后）推荐用智能指针
+    有可能出现dangling pointers，未定义行为或段错误
+    在 API 文档中明确生命周期约束
+
+
+    阶段	发生的事	错误性质
+原集合 students 离开作用域	集合的析构函数被调用，其内部存储的所有 std::string 对象被销毁，内存被释放还给操作系统或运行时堆管理器。	正常的生命周期结束
+之后通过队列中的指针访问原名字	指针指向的内存已经不再属于该字符串对象，可能已被其他代码覆盖或标记为不可访问。	悬垂指针解引用

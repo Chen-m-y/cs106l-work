@@ -7,14 +7,18 @@
  *
  */
 
+#include <cctype>
+#include <cstddef>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <queue>
 #include <set>
+#include <sstream>
 #include <string>
 #include <unordered_set>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Chen Mingyang"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -28,7 +32,27 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  * to also change the corresponding functions in `utils.h`.
  */
 std::set<std::string> get_applicants(std::string filename) {
-  // STUDENT TODO: Implement this function.
+  std::ifstream file(filename);
+  if(! file){
+    std::cerr << "Cannot open file: " << filename << '\n';
+    return {}; 
+  }
+  std::string line;
+  std::set<std::string> return_set;
+  while(std::getline(file, line)){
+    return_set.insert(line);
+  }
+  return return_set;
+}
+
+std::string get_initials(const std::string& full_name){
+  std::string initials;
+  std::istringstream ss(full_name);
+  std::string token;
+  while(ss >> token){
+    initials += std::toupper(token[0]);
+  }
+  return initials;
 }
 
 /**
@@ -40,8 +64,28 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
+  std::queue<const std::string*> queue;
+  // s 本身是引用，它是集合里那个字符串对象的“外号/别名”
+  for(const auto& s : students){
+    if(get_initials(s) == get_initials(name)){
+      queue.push(&s);
+    }
+  }
+  return queue;
 }
+
+
+int get_love(const std::string& name){
+  int sum = 0;
+  /* for(size_t i = 0; i < name.size(); ++i){
+  *  sum += name[i];
+  }*/
+  for(char c : name){
+    sum += c;
+  }
+  return sum;
+}
+
 
 /**
  * Takes in a queue of pointers to possible matches and determines the one true match!
@@ -54,8 +98,20 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  *                Will return "NO MATCHES FOUND." if `matches` is empty.
  */
 std::string get_match(std::queue<const std::string*>& matches) {
-  // STUDENT TODO: Implement this function.
+  // queue是容器适配器，故意隐藏了迭代能力，只暴露受限接口
+  while(!matches.empty()){
+    if(get_love(*matches.front()) == get_love(kYourName)){ //func(a)
+      return *matches.front();
+    }
+    else {
+      matches.pop();
+    }
+    //return *matches.front();
+  }
+  return "NO MATCHES FOUND.";
 }
+
+
 
 /* #### Please don't remove this line! #### */
 #include "autograder/utils.hpp"

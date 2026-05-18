@@ -51,3 +51,12 @@ __pycache__/
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+
+# 附加
+build/
+.vscode/
+*.out
+*.exe
+
+assignment*/student_output/
+assignment*/autograder/student_output/
