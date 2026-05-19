@@ -4,6 +4,7 @@
  */
 
 #include <iostream>
+#include <ostream>
 #include <string>
 
 class User
@@ -19,10 +20,12 @@ public:
    * STUDENT TODO:
    * Your custom operators and special member functions will go here!
    */
+  friend std::ostream&
+  operator<<(const User& ur, std::ostream& os);
 
 private:
   std::string _name;
-  std::string* _friends;
+  std::string* _friends; // 指向字符串的指针
   size_t _size;
   size_t _capacity;
 };

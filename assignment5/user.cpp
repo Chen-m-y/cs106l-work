@@ -63,3 +63,14 @@ void User::set_friend(size_t index, const std::string& name)
  * STUDENT TODO:
  * The definitions for your custom operators and special member functions will go here!
  */
+std::ostream&
+operator<<(const User& ur, std::ostream& os)
+{
+  os << "User(name=" << ur._name << ", firends=";
+  for(int i = 0; i < ur._size; ++i){
+    os << ur._friends[i] << ",";
+  }
+  os << "])";
+
+  return os; // 用于链式使用'<<'
+}
