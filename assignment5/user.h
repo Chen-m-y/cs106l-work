@@ -21,7 +21,7 @@ public:
    * Your custom operators and special member functions will go here!
    */
   friend std::ostream&
-  operator<<(const User& ur, std::ostream& os);
+  operator<<(std::ostream& os,const User& ur);
 
 private:
   std::string _name;
