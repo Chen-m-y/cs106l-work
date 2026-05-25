@@ -93,3 +93,17 @@ User::User(const User& user):
       _friends[i] = user._friends[i];
     }
   }
+
+User& User::operator=(const User& user)
+{
+  if(this == &user) return *this; // 重点
+  delete [] _friends;
+  _name = user._name;
+  _capacity = user._capacity;
+  _size = user._size;
+  _friends = new std::string[_capacity];
+  for(size_t i = 0; i < user._size; ++i) {
+    _friends[i] = user._friends[i];
+  }
+  return *this;
+}
