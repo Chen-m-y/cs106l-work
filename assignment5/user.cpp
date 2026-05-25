@@ -77,3 +77,7 @@ operator<<(std::ostream& os, const User& ur)
 
   return os; // 用于链式使用'<<'
 }
+
+User::~User(){
+  delete [] this->_friends; // 成员函数能访问private
+}

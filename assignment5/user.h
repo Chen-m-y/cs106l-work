@@ -22,6 +22,10 @@ public:
    */
   friend std::ostream&
   operator<<(std::ostream& os,const User& ur);
+  /*不写返回类型
+    没有参数
+    一个类只能有一个析构函数*/
+  ~User();
 
 private:
   std::string _name;
