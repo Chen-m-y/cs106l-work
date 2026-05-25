@@ -32,6 +32,9 @@ public:
   User(User&& user) = delete;
   User& operator=(User&& user) = delete;
 
+  User& operator+=(User& rhs); // Right-Hand Side
+  bool operator<(const User& rhs) const; // 不修改当前对象this
+
 private:
   std::string _name;
   std::string* _friends; // 指向字符串的指针

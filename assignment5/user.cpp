@@ -107,3 +107,13 @@ User& User::operator=(const User& user)
   }
   return *this;
 }
+// Part Three
+User& User::operator+=(User& rhs){
+  if(this == &rhs) return *this;
+  this->add_friend(rhs.get_name());
+  rhs.add_friend(this->get_name());
+  return *this;
+}
+bool User::operator<(const User& rhs) const{
+  return this->_name < rhs._name;
+}
