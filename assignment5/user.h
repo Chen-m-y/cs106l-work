@@ -26,6 +26,7 @@ public:
     没有参数
     一个类只能有一个析构函数*/
   ~User();
+  User(const User& user);
 
 private:
   std::string _name;

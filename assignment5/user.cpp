@@ -1,4 +1,5 @@
 #include "user.h"
+#include <cstddef>
 
 /**
  * Creates a new User with the given name and no friends.
@@ -81,3 +82,14 @@ operator<<(std::ostream& os, const User& ur)
 User::~User(){
   delete [] this->_friends; // 成员函数能访问private
 }
+
+User::User(const User& user): 
+  _name(user._name),
+  _capacity(user._capacity),
+  _size(user._size)
+  {
+    _friends = new std::string[_capacity]; // 当前对象已经初始化好了_capacity(user._capacity)
+    for(size_t i = 0; i < _size; ++i){ // _size(user._size)
+      _friends[i] = user._friends[i];
+    }
+  }
