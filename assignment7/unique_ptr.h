@@ -24,7 +24,6 @@ public:
   unique_ptr(T* ptr) : ptr_(ptr) {
     /* STUDENT TODO: Implement the constructor */
     
-    throw std::runtime_error("Not implemented: unique_ptr(T* ptr)");
   }
 
   /**
@@ -33,7 +32,6 @@ public:
   unique_ptr(std::nullptr_t) : ptr_(nullptr) {
     /* STUDENT TODO: Implement the nullptr constructor */
     /* std::nullptr_t 是类型，nullptr才是对象 */
-    throw std::runtime_error("Not implemented: unique_ptr(std::nullptr_t)");
   }
 
   /**
@@ -49,7 +47,6 @@ public:
   T& operator*() {
     /* STUDENT TODO: Implement the dereference operator */
     return *ptr_; // 返回对象本身，也就是对象的引用（C++&表示以引用方式返回T&，而不是拷贝T）
-    throw std::runtime_error("Not implemented: operator*()");
   }
 
   /**
@@ -59,7 +56,6 @@ public:
   const T& operator*() const {
     /* STUDENT TODO: Implement the dereference operator (const) */
     return *ptr_; // 返回对象
-    throw std::runtime_error("Not implemented: operator*() const");
   }
 
   /**
@@ -70,7 +66,6 @@ public:
   T* operator->() {
     /* STUDENT TODO: Implement the arrow operator */
     return ptr_;
-    throw std::runtime_error("Not implemented: operator->()");
   }
 
   /**
@@ -81,7 +76,6 @@ public:
   const T* operator->() const {
     /* STUDENT TODO: Implement the arrow operator */
     return ptr_;
-    throw std::runtime_error("Not implemented: operator->() const");
   }
 
   /**
@@ -92,7 +86,6 @@ public:
   operator bool() const {
     /* STUDENT TODO: Implement the boolean conversion operator */
     return ptr_ != nullptr;
-    throw std::runtime_error("Not implemented: operator bool() const");
   }
 
   /** STUDENT TODO: In the space below, do the following:
@@ -102,6 +95,24 @@ public:
    * - Implement the move constructor
    * - Implement the move assignment operator
    */
+  ~unique_ptr(){
+    delete ptr_;
+  }
+  unique_ptr(const unique_ptr& other) = delete;
+  unique_ptr& operator=(const unique_ptr& other) = delete;
+  unique_ptr(unique_ptr&& other){ // 右值引用
+    ptr_ = other.ptr_;
+    other.ptr_ = nullptr;
+  }
+  unique_ptr& operator=(unique_ptr&& other){
+    if(this == &other){
+      return *this;
+    }
+    delete ptr_;
+    ptr_ = other.ptr_;
+    other.ptr_ = nullptr;
+    return *this; // 返回自身引用
+  }
 };
 
 /**
