@@ -5,7 +5,46 @@ Make a Class
 ------------
 
 Q1. What’s const-correctness and why is it important?
-A1. TODO
+A1. 
 
 Q2. Is your class const-correct? How do you know?
-A2. TODO
+A2. 
+**Q1. 什么是 const-correctness？为什么重要？**
+
+**const-correctness（const 正确性）** 是一种编码规范：凡是**不会修改对象可见状态**的成员函数，必须在签名末尾加上 `const`；凡是**不会修改传入参数**的引用/指针，必须给参数加上 `const`。
+
+```cpp
+Vec2<T> getPos() const;              // 承诺："我不会改对象"
+void setName(const std::string& s);  // 承诺："我不会改调用方的字符串"
+```
+
+**为什么重要：**
+
+1. **编译器强制契约** —— 如果你不小心在 `const` 函数里改了成员变量，编译器立刻报错，把 bug 拦在编译期。
+2. **const 对象也能调用** —— 一个 `const BasicObject` 只能调用 `const` 成员函数。如果 getter 不加 `const`，你连从 const 对象里读数据都读不了。
+3. **自文档化的接口** —— 扫一眼头文件就知道：带 `const` 的是"只读"，不带的是"会改"，不用翻实现代码。
+4. **优化机会** —— 编译器知道 `const` 函数执行期间对象内存不变，可以更好地做缓存和内联优化。
+
+---
+
+**Q2. 你的类是 const-correct 吗？你怎么知道的？**
+
+**是的，这个类是 const-correct 的。**
+
+证据来自 `class.h` 中的函数签名：
+
+| 函数 | 是否 `const` | 理由 |
+|------|-------------|------|
+| `getPos() const` | ✅ 是 | 只读 `pos`，不修改对象 |
+| `getVel() const` | ✅ 是 | 只读 `vel` |
+| `getName() const` | ✅ 是 | 只读 `name` |
+| `setPos(T, T)` | ❌ 否 | 修改 `pos`，**正确地不加** `const` |
+| `setVel(T, T)` | ❌ 否 | 修改 `vel`，**正确地不加** `const` |
+| `setName(...)` | ❌ 否 | 修改 `name`，**正确地不加** `const` |
+| `update(T)` | ❌ 否 | 调用 `integrate()` 修改 `pos`，**正确地不加** `const` |
+| `integrate(T)` | ❌ 否（私有） | 修改 `pos`，**正确地不加** `const` |
+| `sanitizeName()` | ❌ 否（私有） | 修改 `name`，**正确地不加** `const` |
+
+**判断依据：** 所有会改变对象状态的函数（setter、`update`、私有辅助函数）都保持**非 const**；所有只观察状态的函数（getter）都标记为 **`const`**。这完全符合 const-correctness 的核心原则：
+
+> **"只读就加 const，会改就不加。"**
