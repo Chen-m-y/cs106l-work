@@ -85,7 +85,12 @@ main(int argc, char* argv[])
     Please pay special attention to the README here
     ********************************************************/
 
-    std::string output = ;/* STUDENT_TODO */
+    std::string output = course
+    .transform([](Course c)->std::string{return "Found course: "+c.title+","+c.number_of_units+","+c.quarter+"\n";})
+    // lambda 应该返回 string
+    .or_else([]()->std::optional<std::string>{return std::optional{"Course not found.\n"};})
+    .value();
+
 
     /********************************************************
      DO NOT MODIFY ANYTHING BELOW THIS LINE PLEASE
