@@ -13,6 +13,7 @@ namespace cs106l {
 template <typename T> class unique_ptr {
 private:
   /* STUDENT TODO: What data must a unique_ptr keep track of? */
+  T* ptr_ ;
 
 public:
   /**
@@ -20,16 +21,18 @@ public:
    * @param ptr The pointer to manage.
    * @note You should avoid using this constructor directly and instead use `make_unique()`.
    */
-  unique_ptr(T* ptr) {
+  unique_ptr(T* ptr) : ptr_(ptr) {
     /* STUDENT TODO: Implement the constructor */
+    
     throw std::runtime_error("Not implemented: unique_ptr(T* ptr)");
   }
 
   /**
    * @brief Constructs a new `unique_ptr` from `nullptr`.
    */
-  unique_ptr(std::nullptr_t) {
+  unique_ptr(std::nullptr_t) : ptr_(nullptr) {
     /* STUDENT TODO: Implement the nullptr constructor */
+    /* std::nullptr_t 是类型，nullptr才是对象 */
     throw std::runtime_error("Not implemented: unique_ptr(std::nullptr_t)");
   }
 
